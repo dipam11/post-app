@@ -2,44 +2,142 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-router.post('/', async (req, res, next) => {
+// Create a new post
+router.post('/', async (req, res) => {
   try {
     const { title, content } = req.body;
-    const post = await Post.create({ title, content });
-    res.status(201).json(post);
+    const post = new Post({ title, content });
+    await post.save();
+    res.json(post);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: 'Error creating post' });
   }
 });
 
-router.put('/:postId', async (req, res, next) => {
+// Get all posts
+router.get('/', async (req, res) => {
   try {
-    const { postId } = req.params;
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving posts' });
+  }
+});
+
+// Update a post
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
     const { title, content } = req.body;
-    const post = await Post.findByIdAndUpdate(
-      postId,
-      { title, content },
-      { new: true }
-    );
+    const updatedPost = await Post.findByIdAndUpdate(id, { title, content }, { new: true });
+    res.json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating post' });
+  }
+});
+
+// Delete a post
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Post.findByIdAndRemove(id);
+    res.json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting post' });
+  }
+});
+
+// Create a new comment
+router.post('/:id/comments', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+    const post = await Post.findById(id);
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    post.comments.push({ text });
+    await post.save();
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating comment' });
+  }
+});
+
+// // Get a single post
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
     }
     res.json(post);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: 'Error retrieving posts' });
   }
 });
 
-router.delete('/:postId', async (req, res, next) => {
+// Create a new reply
+router.post('/:postId/comments/:commentId/replies', async (req, res) => {
   try {
-    const { postId } = req.params;
-    const post = await Post.findByIdAndDelete(postId);
+    const { postId, commentId } = req.params;
+    const { text } = req.body;
+    const post = await Post.findById(postId);
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ error: 'Post not found' });
     }
-    res.json({ message: 'Post deleted successfully' });
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    comment.replies.push({ text });
+    await post.save();
+    res.json(post);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: 'Error creating reply' });
+  }
+});
+
+// Update a comment
+router.put('/:postId/comments/:commentId', async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+    const { text } = req.body;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    comment.text = text;
+    await post.save();
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating comment' });
+  }
+});
+
+// Delete a comment
+router.delete('/:postId/comments/:commentId', async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    comment.remove();
+    await post.save();
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting comment' });
   }
 });
 
