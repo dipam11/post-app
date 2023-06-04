@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Post.css';
 
-const API_URL = 'http://localhost:5000/posts';
+const API_URL = 'https://post-app-2vb8.onrender.com/posts';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');

@@ -4,7 +4,7 @@ import axios from 'axios';
 import "./Post.css";
 import "./Home.css";
 
-const API_URL = 'http://localhost:5000/posts';
+const API_URL = 'https://post-app-2vb8.onrender.com/posts';
 
 const EditPost = () => {
   const [title, setTitle] = useState('');

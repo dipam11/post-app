@@ -5,7 +5,7 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import "./PostDetails.css";
 
-const API_URL = "http://localhost:5000/posts";
+const API_URL = "https://post-app-2vb8.onrender.com/posts";
 
 const PostDetails = () => {
   const [post, setPost] = useState({});
