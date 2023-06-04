@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Post.css';
 
 const API_URL = 'http://localhost:5000/posts';
 
@@ -24,7 +25,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <div className='edit-card'>
       <h2>Create Post</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -34,13 +35,13 @@ const CreatePost = () => {
           onChange={(e) => setTitle(e.target.value)}
         />
         <br />
-        <textarea
+        <input
           placeholder="Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-        ></textarea>
+        />
         <br />
-        <button type="submit">Create</button>
+        <button style={{fontSize: "0.9em"}} className='card-btn' type="submit">Create</button>
       </form>
     </div>
   );

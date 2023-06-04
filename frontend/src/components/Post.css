@@ -1,0 +1,33 @@
+.edit-card {
+    margin: 1em auto;
+    margin-top: 5vh;
+    padding: 1em;
+    width: 40%;
+    padding: 1em;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+.edit-card form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5em;
+}
+
+.edit-card input{
+    width: 100%;
+    margin: 1em;
+    padding: 0.5em;
+    border: 8px;
+    border: none;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+input:focus{
+    outline: none;
+}

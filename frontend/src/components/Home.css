@@ -1,0 +1,37 @@
+.card-list {
+  margin: 1em auto;
+  margin-top: 5vh;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-content: center;
+  gap: 30px 30px;
+}
+
+.card {
+  padding: 1em;
+  max-width: 350px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.card-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h3,
+p {
+  margin: 1em 0;
+}
+
+
+
+
+
