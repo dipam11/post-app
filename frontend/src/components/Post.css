@@ -31,3 +31,9 @@
 input:focus{
     outline: none;
 }
+
+@media only screen and (max-width: 426px) {
+    .edit-card {
+      width: 90%;
+    }
+  }
